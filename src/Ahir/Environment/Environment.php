@@ -4,13 +4,6 @@ use Exception;
 
 class Environment {
 
-    /** 
-     * Active hostname 
-     *
-     * @var string
-     */
-    protected $hostname;
-
     /**
      * Active environment variable 
      *
