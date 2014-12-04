@@ -22,8 +22,5 @@
         "psr-0": {
             "Ahir\\Environment\\": "src"
         }
-    },    
-    "require": {
-        "ahir/facades": "1.*"
     }
 }

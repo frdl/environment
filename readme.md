@@ -18,7 +18,8 @@ To install through composer, simply put the following in your `composer.json` fi
 
 `index.php`
 ```php 
-Environment::detectEnvironment([
+$environment = new Ahir\Environment\Environment;
+$environment->detectEnvironment([
         'local' => ['your-machine-name']
     ]);
 ```
@@ -37,6 +38,10 @@ return [
 ```php
 $secret = getenv('secret-password');
 ```
+
+## Facades 
+
+If you wish, you can use environment library with facade connector. Please visit for guideline. [ahir/facades](https://github.com/ahirarge/facades)
 
 ## License
 
