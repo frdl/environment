@@ -1,0 +1,29 @@
+{
+    "name": "ahir/environment",
+    "description": "Simple PHP environment manager.",
+    "keywords": ["php", "environment", "config"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ahir Ar-Ge",
+            "email": "development@ahir.com.tr"
+        },
+        {
+            "name": "Özgür Adem Işıklı",
+            "email": "i.ozguradem@gmail.com",
+            "role": "Creator & Designer"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "classmap": [
+            "src/Ahir/Environment/Facades/Environment"
+        ],
+        "psr-0": {
+            "Ahir\\Environment\\": "src"
+        }
+    },    
+    "require": {
+        "ahir/facades": "1.*"
+    }
+}
