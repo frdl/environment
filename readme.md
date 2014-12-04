@@ -19,9 +19,10 @@ To install through composer, simply put the following in your `composer.json` fi
 `index.php`
 ```php 
 $environment = new Ahir\Environment\Environment;
-$environment->detectEnvironment([
-        'local' => ['your-machine-name']
-    ]);
+$environment->path('/')
+            ->detectEnvironment([
+                'local' => ['your-machine-name']
+            ]);
 ```
 
 > You can check your machine name with `hostname` command.

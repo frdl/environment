@@ -12,6 +12,25 @@ class Environment {
     protected $environment = 'production';
 
     /**
+     * Path prefix for environment files 
+     *
+     * @var string
+     */
+    protected $path = '/';
+
+    /**
+     * Setting path prefix 
+     *
+     * @param  string       $path
+     * @return this
+     */
+    public function path($path)
+    {
+        $this->path = $path;
+        return $this;
+    }
+
+    /**
      * Environment detection 
      *
      * @param  array        $setups 
@@ -49,7 +68,11 @@ class Environment {
      */
     private function getFromFile()
     {
-        $filePath = getcwd().'/.env.'.$this->environment.'.php';
+        $filePath = getcwd().
+                    $this->path.
+                    '.env.'.
+                    $this->environment.
+                    '.php';
         if (!file_exists($filePath)) {
             throw new Exception("Environment file is not found: $filePath");
         }
