@@ -19,6 +19,13 @@ class Environment {
     protected $path = '/';
 
     /**
+     * File 
+     *
+     * @var  mixed
+     */
+    private $file = false;
+
+    /**
      * Setting path prefix 
      *
      * @param  string       $path
@@ -27,6 +34,18 @@ class Environment {
     public function path($path)
     {
         $this->path = $path;
+        return $this;
+    }
+
+    /**
+     * Setting file 
+     *
+     * @param  string       $file 
+     * @return this
+     */
+    public function file($file)
+    {
+        $this->file = $file;
         return $this;
     }
 
@@ -68,11 +87,22 @@ class Environment {
      */
     private function getFromFile()
     {
-        $filePath = getcwd().
-                    $this->path.
-                    '.env.'.
-                    $this->environment.
-                    '.php';
+        if ($this->file === false)
+        {
+            $filePath = getcwd().
+                        $this->path.
+                        '.env.'.
+                        $this->environment.
+                        '.php';            
+        } 
+        else 
+        {
+            $filePath = $this->file.
+                        '.env.'.
+                        $this->environment.
+                        '.php';            
+        }
+
         if (!file_exists($filePath)) {
             throw new Exception("Environment file is not found: $filePath");
         }

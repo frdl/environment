@@ -25,6 +25,15 @@ $environment->path('/')
             ]);
 ```
 
+`index.php`
+```php 
+$environment = new Ahir\Environment\Environment;
+$environment->file('/home/')
+            ->detectEnvironment([
+                'local' => ['your-machine-name']
+            ]);
+```
+
 > You can check your machine name with `hostname` command.
 
 `.env.local.php`
