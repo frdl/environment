@@ -45,6 +45,13 @@ return [
     ];
 ```
 
+`.env.local.json`
+```json
+{
+    "environment": "development"
+}
+```
+
 ```php
 $secret = getenv('secret-password');
 ```
