@@ -92,21 +92,21 @@ class Environment {
             $filePath = getcwd().
                         $this->path.
                         '.env.'.
-                        $this->environment.
-                        '.php';            
+                        $this->environment;
         } 
         else 
         {
             $filePath = $this->file.
                         '.env.'.
-                        $this->environment.
-                        '.php';            
+                        $this->environment;
         }
 
-        if (!file_exists($filePath)) {
-            throw new Exception("Environment file is not found: $filePath");
-        }
-        return include($filePath);
+        if (file_exists($filePath.'.json')) {
+            return json_decode(file_get_contents($filePath.'.json'));
+        } else if (file_exists($filePath.'.json')) {
+            return include($filePath.'.php');
+        } 
+        throw new Exception("Environment file is not found: $filePath.{json/php}");
     }
 
 }
