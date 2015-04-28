@@ -76,7 +76,13 @@ class Environment {
     {
         $environments = $this->getFromFile();
         foreach ($environments as $key => $value) {
-            putenv("$key=$value");
+            if (is_object($value)) {
+                foreach ($value as $sub => $subValue) {
+                    putenv("{$key}_{$sub}=$subValue");
+                }
+            } else {
+                putenv("$key=$value");
+            }
         }
     }
 
