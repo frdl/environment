@@ -110,11 +110,11 @@ class Environment {
             foreach ($setup as $index => $hostname) {
                 if ($hostname === $this->host) {
                     $this->file = $environment;
-		    $this->loadEnvironmentVariables();
+		            $this->loadEnvironmentVariables();
                 }
             }
         }
-      
+      return $this;
     }
 
 	
@@ -156,7 +156,7 @@ class Environment {
                 }
             } else {
               //  putenv("$key=$value");
-		  $dotenv->populate([$key => $value], true);
+		            $dotenv->populate([$key => $value], true);
             }
         }
     }
