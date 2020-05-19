@@ -13,7 +13,7 @@ class Environment {
      *
      * @var string
      */
-    protected $environment = 'production';
+    protected $file = '';
 
     /**
      * Path prefix for environment files 
@@ -32,7 +32,12 @@ class Environment {
 	
     protected $pfx = '.env.';
 	
+    protected $host = null;	
+	
  public function __construct(?string $dir = null, ?string $pfx = null){	 
+	 
+     $this->host = $this->getHost();     
+	 
      if(!is_string($pfx)){
            $this->pfx = '.env.';
      }else{
@@ -103,14 +108,37 @@ class Environment {
     {
         foreach ($setups as $environment => $setup) {
             foreach ($setup as $index => $hostname) {
-                if ($hostname === gethostname()) {
-                    $this->environment = $environment;
+                if ($hostname === $this->host) {
+                    $this->file = $environment;
+		    $this->loadEnvironmentVariables();
                 }
             }
         }
-        $this->loadEnvironmentVariables();
+      
     }
 
+	
+    public function host(?string $host = null){
+	    if(null!==$host){
+		$this->host = $host;    
+	    }else{
+		$this->host = $this->getHost();     
+	    }
+    }
+	
+	
+   public function getHost(){
+	if(isset($_SERVER['SERVER_NAME'])){
+	  return $_SERVER['SERVER_NAME'];	
+	}elseif(isset($_SERVER['HTTP_HOST'])){
+	  return $_SERVER['HTTP_HOST'];	
+	}elseif(isset($_SERVER['HTTP_X_FORWARDED_HOST'])){
+	  return $_SERVER['HTTP_X_FORWARDED_HOST'];	
+	}else{
+	  return gethostname();	
+	}
+   }
+	
     /**
      * Loading environment variables 
      *
@@ -140,26 +168,15 @@ class Environment {
      */
     private function getFromFile()
     {
-	    /*
-        if ($this->file === false)
-        {
-            $filePath = getcwd().
-                        $this->path.
-                        '.env.'.
-                        $this->environment;
-        } 
-        else 
-        {
-            $filePath = $this->file.
-                        '.env.'.
-                        $this->environment;
-        }
-	*/
 
-	    $filePath = rtrim($this->root, '\\/')
+
+	    $filePath = rtrim(
+		            rtrim($this->root, '\\/')
 		           .$this->path
 		           .$this->pfx
-                           .$this->environment;
+                           .$this->file,
+		    '.'
+	    );
 	    
        if(file_exists($filePath)) {
 	     $dotenv = new Dotenv();
