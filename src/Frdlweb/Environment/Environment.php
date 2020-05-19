@@ -1,6 +1,10 @@
-<?php namespace Ahir\Environment;
+<?php
+namespace Frdlweb\Environment;
 
+
+use Symfony\Component\Dotenv\Dotenv;
 use Exception;
+
 
 class Environment {
 
