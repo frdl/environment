@@ -20,15 +20,39 @@ class Environment {
      *
      * @var string
      */
-    protected $path = '/';
+    protected $path = '';
 
     /**
      * File 
      *
      * @var  mixed
      */
-    private $file = false;
+    protected $root = '~/';
 
+ public function __construct(?string $dir = null){
+     if(!is_string($dir)){
+       //  $this->dir($this->getRootDir(null));
+          $this->dir(getcwd());
+     }else{
+         $this->dir($dir);
+     }
+ }
+    
+ public function getRootDir($path = null){
+	if(null===$path){
+		$path = $_SERVER['DOCUMENT_ROOT'];
+	}
+		
+  if(''!==dirname($path) && '/'!==dirname($path) //&& @chmod(dirname($path), 0755) 
+    &&  true===@is_writable(dirname($path))
+    ){
+ 	return $this->getRootDir(dirname($path));
+  }else{
+ 	return $path;
+  }
+}   
+    
+    
     /**
      * Setting path prefix 
      *
@@ -47,9 +71,16 @@ class Environment {
      * @param  string       $file 
      * @return this
      */
-    public function file($file)
+    public function dir($root)
     {
-        $this->file = $file;
+      
+        $root = realpath($root);
+        
+        if(!is_dir($root)){
+          throw new \Exception(sprintf('%s is not a valid directory!', $root));  
+        }
+        
+        $this->root = $root;
         return $this;
     }
 
