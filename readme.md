@@ -21,7 +21,10 @@ To install through composer, simply put the following in your `composer.json` fi
 $environment = new Frdlweb\Environment\Environment;
 $environment->path('/')
             ->detectEnvironment([
-                'local' => ['your-machine-name']
+                'local' =>[
+                    'required' => true,
+                    'hosts' => ['your-machine-name']
+                ]
             ]);
 ```
 
@@ -30,7 +33,10 @@ $environment->path('/')
 $environment = new Frdlweb\Environment\Environment;
 $environment->dir('/home/')
             ->detectEnvironment([
-                'local' => ['your-machine-name']
+                'local' =>[
+                    'required' => false,
+                    'hosts' => ['your-machine-name']
+                ]
             ]);
 ```
 
