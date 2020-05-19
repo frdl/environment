@@ -117,15 +117,18 @@ class Environment {
      * @return null
      */
     private function loadEnvironmentVariables()
-    {
+    { 
+	$dotenv = new Dotenv();
         $environments = $this->getFromFile();
         foreach ($environments as $key => $value) {
             if (is_object($value)) {
                 foreach ($value as $sub => $subValue) {
-                    putenv("{$key}_{$sub}=$subValue");
+                  //  putenv("{$key}_{$sub}=$subValue");
+		     $dotenv->populate([$key.'_'.$sub => $subValue], true);
                 }
             } else {
-                putenv("$key=$value");
+              //  putenv("$key=$value");
+		  $dotenv->populate([$key => $value], true);
             }
         }
     }
