@@ -1,6 +1,6 @@
 # Environment
 
-This is a environment library for quick environment setup.
+This is a environment library for quick environment setup. [Forked from ahirarge/environment](https://github.com/ahirarge/environment)
 
 ## Installation
 
@@ -9,7 +9,7 @@ To install through composer, simply put the following in your `composer.json` fi
 ```json
 {
     "require": {
-        "ahir/environment": "1.*",
+        "frdl/environment": "*",
     }
 }
 ```
