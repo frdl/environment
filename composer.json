@@ -23,8 +23,8 @@
     },
     "minimum-stability": "stable",
     "autoload": {
-        "psr-0": {
-            "Frdlweb\\Environment\\": "src"
+        "psr-4": {
+            "Frdlweb\\Environment\\": "src/"
         }
     }
 }
