@@ -1,5 +1,5 @@
 {
-    "name": "ahir/environment",
+    "name": "frdl/environment",
     "description": "Simple PHP environment manager.",
     "keywords": ["php", "environment", "config"],
     "license": "MIT",
@@ -12,12 +12,19 @@
             "name": "Özgür Adem Işıklı",
             "email": "i.ozguradem@gmail.com",
             "role": "Creator & Designer"
+        },
+        {
+            "name": "Till Wehowski",
+            "email": "software@frdl.de"
         }
     ],
+    "require" : {
+      "symfony/dotenv" : "5.*"  
+    },
     "minimum-stability": "stable",
     "autoload": {
         "psr-0": {
-            "Ahir\\Environment\\": "src"
+            "Frdlweb\\Environment\\": "src"
         }
     }
 }
