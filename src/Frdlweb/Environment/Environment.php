@@ -158,9 +158,12 @@ class Environment {
 		           .$this->pfx
                            .$this->environment;
 	    
-        if (file_exists($filePath.'.json')) {
+       if(file_exists($filePath)) {
+	     $dotenv = new Dotenv();
+            return $dotenv->parse(file_get_contents($filePath));
+        }elseif(file_exists($filePath.'.json')) {
             return json_decode(file_get_contents($filePath.'.json'));
-        } else if (file_exists($filePath.'.json')) {
+        }elseif(file_exists($filePath.'.json')) {
             return include($filePath.'.php');
         } 
         throw new Exception("Environment file is not found: $filePath.{json/php}");
