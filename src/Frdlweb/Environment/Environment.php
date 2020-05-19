@@ -29,7 +29,16 @@ class Environment {
      */
     protected $root = '~/';
 
- public function __construct(?string $dir = null){
+	
+    protected $pfx = '.env.';
+	
+ public function __construct(?string $dir = null, ?string $pfx = null){	 
+     if(!is_string($pfx)){
+           $this->pfx = '.env.';
+     }else{
+          $this->pfx = $pfx;
+     }	
+	
      if(!is_string($dir)){
        //  $this->dir($this->getRootDir(null));
           $this->dir(getcwd());
@@ -128,6 +137,7 @@ class Environment {
      */
     private function getFromFile()
     {
+	    /*
         if ($this->file === false)
         {
             $filePath = getcwd().
@@ -141,7 +151,13 @@ class Environment {
                         '.env.'.
                         $this->environment;
         }
+	*/
 
+	    $filePath = rtrim($this->root, '\\/')
+		           .$this->path
+		           .$this->pfx
+                           .$this->environment;
+	    
         if (file_exists($filePath.'.json')) {
             return json_decode(file_get_contents($filePath.'.json'));
         } else if (file_exists($filePath.'.json')) {
