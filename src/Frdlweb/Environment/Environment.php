@@ -34,6 +34,8 @@ class Environment {
 	
     protected $host = null;	
 	
+	protected $required = true;
+	
  public function __construct(?string $dir = null, ?string $pfx = null){	 
 	 
      $this->host = $this->getHost();     
@@ -107,8 +109,14 @@ class Environment {
     public function detectEnvironment(Array $setups)
     {
         foreach ($setups as $environment => $setup) {
-            foreach ($setup as $index => $hostname) {
-                if ($hostname === $this->host) {
+
+            foreach ($setup['hosts'] as $index => $hostname) {
+                if ($hostname === $this->host) {		
+					if(isset($setup['required']) && is_bool($setup['required'])){			
+						$this->required = $setup['required'];			
+					}else{
+						$this->required = true;			
+					}
                     $this->file = $environment;
 		            $this->loadEnvironmentVariables();
                 }
@@ -152,7 +160,7 @@ class Environment {
             if (is_object($value)) {
                 foreach ($value as $sub => $subValue) {
                   //  putenv("{$key}_{$sub}=$subValue");
-		     $dotenv->populate([$key.'_'.$sub => $subValue], true);
+		          $dotenv->populate([$key.'_'.$sub => $subValue], true);
                 }
             } else {
               //  putenv("$key=$value");
@@ -171,8 +179,8 @@ class Environment {
 
 
 	    $filePath = rtrim(
-		            rtrim($this->root, '\\/')
-		           .$this->path
+		            rtrim($this->root, '\\/').\DIRECTORY_SEPARATOR			       
+		           .rtrim($this->path, '\\/').\DIRECTORY_SEPARATOR	
 		           .$this->pfx
                            .$this->file,
 		    '.'
@@ -184,9 +192,13 @@ class Environment {
         }elseif(file_exists($filePath.'.json')) {
             return json_decode(file_get_contents($filePath.'.json'));
         }elseif(file_exists($filePath.'.json')) {
-            return include($filePath.'.php');
+            return require($filePath.'.php');
         } 
-        throw new Exception("Environment file is not found: $filePath.{json/php}");
+		if(true === $this->required){
+           throw new Exception("Environment file is not found: $filePath{|.json|.php}");
+		}else{
+		  return [];	
+		}
     }
 
 }
