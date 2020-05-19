@@ -18,7 +18,7 @@ To install through composer, simply put the following in your `composer.json` fi
 
 `index.php`
 ```php 
-$environment = new Ahir\Environment\Environment;
+$environment = new Frdlweb\Environment\Environment;
 $environment->path('/')
             ->detectEnvironment([
                 'local' => ['your-machine-name']
@@ -27,8 +27,8 @@ $environment->path('/')
 
 `index.php`
 ```php 
-$environment = new Ahir\Environment\Environment;
-$environment->file('/home/')
+$environment = new Frdlweb\Environment\Environment;
+$environment->dir('/home/')
             ->detectEnvironment([
                 'local' => ['your-machine-name']
             ]);
