@@ -90,7 +90,7 @@ class Environment {
     public function dir($root)
     {
       
-        $root = realpath($root);
+      //  $root = realpath($root);
         
         if(!is_dir($root)){
           throw new \Exception(sprintf('%s is not a valid directory!', $root));  
@@ -159,11 +159,11 @@ class Environment {
         foreach ($environments as $key => $value) {
             if (is_object($value)) {
                 foreach ($value as $sub => $subValue) {
-                  //  putenv("{$key}_{$sub}=$subValue");
+                    putenv("{$key}_{$sub}=$subValue");
 		          $dotenv->populate([$key.'_'.$sub => $subValue], true);
                 }
             } else {
-              //  putenv("$key=$value");
+                    putenv("$key=$value");
 		            $dotenv->populate([$key => $value], true);
             }
         }
