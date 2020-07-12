@@ -91,13 +91,33 @@ class Environment {
     {
       
       //  $root = realpath($root);
-        
-        if(!is_dir($root)){
-          throw new \Exception(sprintf('%s is not a valid directory!', $root));  
-        }
-        
-        $this->root = $root;
-        return $this;
+       if(!\is_array($root)){
+	       $this->root = $root;	     
+               return $this;
+       }else{
+	    
+	
+	 
+	   foreach($root as $rootDir){  
+		$dirs= \explode('\\/', $rootDir);
+		foreach($dirs as $d){		
+			if(!is_dir($d)){        			
+				throw new \Exception(sprintf('%s is not a valid directory!', $d));  
+			}
+			
+		
+		}	
+		
+	
+	      
+	   }
+      
+         
+       }
+	    
+	    
+       $this->root = $root[0];
+       return $this;
     }
 
     /**
@@ -111,14 +131,15 @@ class Environment {
         foreach ($setups as $environment => $setup) {
 
             foreach ($setup['hosts'] as $index => $hostname) {
-                if ($hostname === $this->host) {		
+                if ('*' ===$hostname || $hostname === $this->host) {		
 					if(isset($setup['required']) && is_bool($setup['required'])){			
 						$this->required = $setup['required'];			
 					}else{
 						$this->required = true;			
 					}
-                    $this->file = $environment;
-		            $this->loadEnvironmentVariables();
+                 
+			$this->file = $environment;		     
+			$this->loadEnvironmentVariables();
                 }
             }
         }
