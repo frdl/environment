@@ -212,8 +212,7 @@ class Environment {
             $res = json_decode(file_get_contents($filePath.'.json'));
         }elseif(file_exists($filePath.'.php')) {
             $res = require($filePath.'.php');
-        } 
-		if(true === $this->required){
+        }elseif(true === $this->required){
                      throw new Exception("Environment file is not found: $filePath{|.json|.php}");
 		}else{
 		  return $res;	
