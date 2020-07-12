@@ -91,32 +91,9 @@ class Environment {
     {
       
       //  $root = realpath($root);
-       if(!\is_array($root)){
-	       $this->root = $root;	     
-               return $this;
-       }else{
+ 
 	    
-	
-	 
-	   foreach($root as $rootDir){  
-		$dirs= \explode('\\/', $rootDir);
-		foreach($dirs as $d){		
-			if(!is_dir($d)){        			
-				throw new \Exception(sprintf('%s is not a valid directory!', $d));  
-			}
-			
-		
-		}	
-		
-	
-	      
-	   }
-      
-         
-       }
-	    
-	    
-       $this->root = $root[0];
+       $this->root = $root;
        return $this;
     }
 
@@ -197,29 +174,57 @@ class Environment {
      */
     private function getFromFile()
     {
-
-
-	    $filePath = rtrim(
-		            rtrim($this->root, '\\/').\DIRECTORY_SEPARATOR			       
-		           .rtrim($this->path, '\\/').\DIRECTORY_SEPARATOR	
-		           .$this->pfx
-                           .$this->file,
-		    '.'
-	    );
+        $root  = $this->root;
+	    
+       if(!\is_array($root)){
+	       $root = [$root];	   
+       }
+	    
+	
+	 foreach($root as $d){
+	   $p ='';
+	   $res =[];
+	    $tokens = \explode('\\/', $d);
+		 foreach($tokens as $t){ 
+			$p .= \DIRECTORY_SEPARATOR.$t; 
+			 if(getenv('HOME') === \substr($p, 0, strlen(getenv('HOME')))){
+				continue; 
+			 }
+			 
+	   
+			    $filePath = rtrim(		        
+				    rtrim($p, '\\/').\DIRECTORY_SEPARATOR     
+		           
+				    .rtrim($this->path, '\\/').\DIRECTORY_SEPARATOR
+		         
+				    .$this->pfx
+                         
+				    .$this->file,
+		   
+				    '.'
+	 
+			    );
 	    
        if(file_exists($filePath)) {
 	     $dotenv = new Dotenv();
-            return $dotenv->parse(file_get_contents($filePath));
+            $res = $dotenv->parse(file_get_contents($filePath));
         }elseif(file_exists($filePath.'.json')) {
-            return json_decode(file_get_contents($filePath.'.json'));
-        }elseif(file_exists($filePath.'.json')) {
-            return require($filePath.'.php');
+            $res = json_decode(file_get_contents($filePath.'.json'));
+        }elseif(file_exists($filePath.'.php')) {
+            $res = require($filePath.'.php');
         } 
 		if(true === $this->required){
-           throw new Exception("Environment file is not found: $filePath{|.json|.php}");
+                     throw new Exception("Environment file is not found: $filePath{|.json|.php}");
 		}else{
-		  return [];	
+		  return $res;	
 		}
+		 
+	 }
+		
+	 
+	 }
+	 
+	 return $res;
     }
 
 }
