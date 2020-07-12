@@ -187,7 +187,7 @@ class Environment {
 	    $tokens = \explode('\\/', $d);
 		 foreach($tokens as $t){ 
 			$p .= \DIRECTORY_SEPARATOR.$t; 
-			 if(getenv('HOME') === \substr($p, 0, strlen(getenv('HOME')))){
+			 if(\strlen(getenv('HOME')) >= \strlen(\substr($p, 0, strlen(getenv('HOME'))))){
 				continue; 
 			 }
 			 
